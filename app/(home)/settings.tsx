@@ -14,6 +14,7 @@ export default function settings() {
     <View className='mt-4 p-4 flex flex-col gap-4'>
       <View className='flex flex-col justify-start gap-4'>
         <Text className='text-2xl font-bold'>Account</Text>
+        <Text className='text-lg'>{user?.emailAddresses[0].emailAddress}</Text>
         <Button  variant='outline' size='lg' className='rounded-full'>
           <Text>Subscription</Text>
         </Button>
@@ -22,6 +23,12 @@ export default function settings() {
         <Text className='text-2xl font-bold'>Sign Out</Text>
         <Button variant='destructive' size='lg' className='rounded-full'>
           <SignOutButton />
+        </Button>
+      </View>
+      <View className='flex flex-col justify-start  gap-4'>
+        <Text className='text-2xl font-bold'>Delete Account</Text>
+        <Button variant='destructive' size='lg' className='rounded-full'>
+          <Text>Delete Account</Text>
         </Button>
       </View>
     </View>
