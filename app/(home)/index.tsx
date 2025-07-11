@@ -4,13 +4,6 @@ import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PodCard from "~/components/PodCard";
 import { Button } from "~/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
 import { Text as TextUI } from "~/components/ui/text";
 export default function Page() {
   const { user } = useUser();
@@ -20,7 +13,7 @@ export default function Page() {
   }
 
   return (
-    <View className="flex-1 bg-slate-500">
+    <View className="flex-1">
       <SafeAreaView>
         <SignedIn>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -33,7 +26,12 @@ export default function Page() {
               >
                 <TextUI>Settings</TextUI>
               </Button>
-              <Button variant="outline" size="lg" className="rounded-full">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full"
+                onPress={() => router.push("/create-podcast")}
+              >
                 <TextUI>Create Podcast</TextUI>
               </Button>
             </View>

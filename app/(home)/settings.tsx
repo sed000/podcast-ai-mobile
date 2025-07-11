@@ -11,11 +11,11 @@ export default function settings() {
     const { user } = useUser();
     const { signOut } = useClerk();
   return (
-    <View className='mt-4 p-4 flex flex-col gap-4'>
+    <View className='flex-1 mt-4 p-4 flex flex-col gap-4 bg1'>
       <View className='flex flex-col justify-start gap-4'>
         <Text className='text-2xl font-bold'>Account</Text>
         <Text className='text-lg'>{user?.emailAddresses[0].emailAddress}</Text>
-        <Button  variant='outline' size='lg' className='rounded-full'>
+        <Button  variant='default' size='lg' className='rounded-full'>
           <Text>Subscription</Text>
         </Button>
       </View>
