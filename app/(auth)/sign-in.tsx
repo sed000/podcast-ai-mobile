@@ -32,7 +32,7 @@ export default function Page() {
     } catch (err) {
       console.error('SSO error', err)
     }
-  }, [])
+  }, [startSSOFlow])
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

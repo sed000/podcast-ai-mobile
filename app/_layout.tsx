@@ -16,7 +16,7 @@ import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "~/components/ThemeToggle";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import { ClerkProvider } from "@clerk/clerk-expo";
-import { tokenCache } from '@clerk/clerk-expo/token-cache'
+import { tokenCache } from "@clerk/clerk-expo/token-cache";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
