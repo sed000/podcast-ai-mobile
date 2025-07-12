@@ -1,4 +1,4 @@
-import { Alert, SafeAreaView, ScrollView, TextInput, View } from "react-native";
+import { SafeAreaView, ScrollView, TextInput, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Text } from "~/components/ui/text";
 import { Label } from "~/components/ui/label";
@@ -12,6 +12,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
+import { generatePodcast } from "~/api/api";
+import { useUser } from "@clerk/clerk-react";
+import { router } from "expo-router";
+import { usePodcast } from "~/lib/PodcastContext";
 
 const voiceOptions = [
   { label: "Alloy", value: "alloy" },
@@ -30,7 +34,11 @@ export default function CreatePodcast() {
   const [guestVoice, setGuestVoice] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
+  const { user } = useUser();
+  const { setGenerating, setError: setPodcastError } = usePodcast();
+  const userId = user?.id?.toString();
   useEffect(() => {
     if (prompt.length < 10) {
       setDisabled(true);
@@ -50,9 +58,22 @@ export default function CreatePodcast() {
     }
   }, [hostVoice, guestVoice, prompt]);
 
-  const handleCreatePodcast = () => {
-    if (!disabled) {
-      Alert.alert("Podcast Created!", `Your podcast about "${prompt}" is being generated.`);
+  const handleCreatePodcast = async () => {
+    if (!disabled && userId && !isLoading) {
+      try {
+        setIsLoading(true);
+        setGenerating(true, prompt);
+        setPodcastError(null);
+        
+        router.push('/');
+        const result = await generatePodcast(prompt, userId, hostVoice, guestVoice);
+              
+      } catch (err: any) {
+        setPodcastError(err.message || 'Failed to generate podcast');
+      } finally {
+        setGenerating(false);
+        setIsLoading(false);
+      }
     }
   };
 
@@ -142,10 +163,10 @@ export default function CreatePodcast() {
             <Button
               size="lg"
               className="w-full"
-              disabled={disabled}
+              disabled={disabled || isLoading}
               onPress={handleCreatePodcast}
             >
-              <Text>Create Podcast</Text>
+              <Text>{isLoading ? "Creating..." : "Create Podcast"}</Text>
             </Button>
             {error ? <Text className="text-destructive text-center mt-4">{error}</Text> : null}
           </View>

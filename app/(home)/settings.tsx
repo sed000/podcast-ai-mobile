@@ -4,6 +4,7 @@ import { useClerk, useUser } from '@clerk/clerk-expo';
 import { Text } from '~/components/ui/text';
 import { Button } from '~/components/ui/button';
 import { SignOutButton } from '~/components/SignOutButton';
+import SubscriptionDialog from '~/components/SubscriptionDialog';
 
 export default function settings() {
     const { user } = useUser();
@@ -17,9 +18,7 @@ export default function settings() {
         <Text className='text-lg'>{user?.emailAddresses[0].emailAddress}</Text>
         <Text className='text-lg font-bold'>Coins: {coins}</Text>
         {subscription ? (
-          <Button  variant='default' size='lg' className='rounded-full'>
-            <Text>Manage Subscription</Text>
-          </Button>
+         <SubscriptionDialog />
         ) : (
           <Button  variant='default' size='lg' className='rounded-full'>
             <Text>Subscribe</Text>

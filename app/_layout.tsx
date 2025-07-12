@@ -16,6 +16,7 @@ import { PortalHost } from "@rn-primitives/portal";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
+import { PodcastProvider } from "~/lib/PodcastContext";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -43,24 +44,26 @@ export default function RootLayout() {
 
   return (
     <ClerkProvider tokenCache={tokenCache}>
-      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Stack>
-          <Stack.Screen
-            name="(auth)"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(home)"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack>
-        <PortalHost />
-      </ThemeProvider>
+      <PodcastProvider>
+        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+          <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+          <Stack>
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="(home)"
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack>
+          <PortalHost />
+        </ThemeProvider>
+      </PodcastProvider>
     </ClerkProvider>
   );
 }

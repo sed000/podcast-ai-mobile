@@ -5,9 +5,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import PodCard from "~/components/PodCard";
 import { Button } from "~/components/ui/button";
 import { Text as TextUI } from "~/components/ui/text";
+import { usePodcast } from "~/lib/PodcastContext";
+import LoadingSpinner from "~/components/LoadingSpinner";
+
 export default function Page() {
   const { user } = useUser();
   const router = useRouter();
+  const { isGenerating, generatingPrompt, error } = usePodcast();
+
   if (!user) {
     return <Redirect href="/(auth)/sign-in" />;
   }
@@ -31,10 +36,26 @@ export default function Page() {
                 size="lg"
                 className="rounded-full"
                 onPress={() => router.push("/create-podcast")}
+                disabled={isGenerating}
               >
                 <TextUI>Create Podcast</TextUI>
               </Button>
             </View>
+
+            {isGenerating && (
+              <LoadingSpinner prompt={generatingPrompt} />
+            )}
+
+            {error && (
+              <View className="mx-4 mb-6 p-4 bg-destructive/10 border border-destructive rounded-lg">
+                <TextUI className="text-destructive font-medium">
+                  Error generating podcast
+                </TextUI>
+                <TextUI className="text-destructive text-sm mt-1">
+                  Please try again later. Your coins will be refunded.
+                </TextUI>
+              </View>
+            )}
 
             <View className="mx-2 flex flex-col gap-4">
               <PodCard
