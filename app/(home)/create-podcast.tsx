@@ -12,6 +12,18 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
+
+const voiceOptions = [
+  { label: "Alloy", value: "alloy" },
+  { label: "Ash", value: "ash" },
+  { label: "Ballad", value: "ballad" },
+  { label: "Echo", value: "echo" },
+  { label: "Coral", value: "coral" },
+  { label: "Fable", value: "fable" },
+  { label: "Nova", value: "nova" },
+
+];
+
 export default function CreatePodcast() {
   const [prompt, setPrompt] = useState("");
   const [hostVoice, setHostVoice] = useState("");
@@ -20,165 +32,125 @@ export default function CreatePodcast() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (hostVoice === guestVoice) {
-      setDisabled(true);
-      setError("Host and guest voices cannot be the same");
-    }
     if (prompt.length < 10) {
       setDisabled(true);
       setError("Prompt must be at least 10 characters");
-    }
-    if (hostVoice != guestVoice && prompt.length >= 10) {
+    } else if (!hostVoice) {
+      setDisabled(true);
+      setError("Please select a host voice");
+    } else if (!guestVoice) {
+      setDisabled(true);
+      setError("Please select a guest voice");
+    } else if (hostVoice === guestVoice) {
+      setDisabled(true);
+      setError("Host and guest voices cannot be the same");
+    } else {
       setDisabled(false);
       setError("");
     }
   }, [hostVoice, guestVoice, prompt]);
 
+  const handleCreatePodcast = () => {
+    if (!disabled) {
+      Alert.alert("Podcast Created!", `Your podcast about "${prompt}" is being generated.`);
+    }
+  };
+
   return (
-    <View className="flex-1 mt-4 p-4 flex flex-col gap-4 bg1">
-      <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Text className="text-5xl font-bold text-center mt-10">
+    <ScrollView className="flex-1 bg-background p-6">
+      <SafeAreaView className="flex-1">
+        <View className="flex-1 justify-center gap-y-8">
+          <Text className="text-4xl font-bold text-center text-foreground">
             Let's create a podcast
           </Text>
-          <View className="flex flex-col items-center justify-center mt-10">
-            <Label className="text-5xl  font-bold">Enter your prompt</Label>
+
+          <View className="gap-y-4">
+            <Label className="text-lg font-medium text-foreground">Enter your prompt</Label>
             <TextInput
               placeholder="What do you want to listen about?"
               value={prompt}
               onChangeText={setPrompt}
-              aria-labelledby="input-label"
-              className="text-2xl bg-white w-fit border-2 p-2 mx-2 rounded-full"
+              className="text-lg bg-gray-300 border border-border rounded-lg p-4 w-full text-foreground"
               multiline={true}
               maxLength={100}
+              placeholderTextColor="gray"
             />
-            <Text className="text-md font-bold mt-1">
-              {prompt.length} / 100 characters
+            <Text className="text-sm text-muted-foreground text-right">
+              {prompt.length} / 100
             </Text>
           </View>
-          <View className="flex flex-col items-center justify-center mt-10">
-            <Label className="text-5xl font-bold">Select host voice</Label>
-            <View className="flex flex-row items-center justify-center gap-2">
+
+          <View className="gap-y-4">
+            <View>
+              <Label className="text-lg font-medium text-foreground mb-2">Select host voice</Label>
               <Select>
-                <SelectTrigger className="w-[250px]">
+                <SelectTrigger className="w-full">
                   <SelectValue
-                    className="text-foreground text-sm native:text-lg"
-                    placeholder="Select a voice for the host"
+                    className="text-foreground text-lg"
+                    placeholder="Select a voice..."
                   />
                 </SelectTrigger>
-                <SelectContent className="w-[250px]">
+                <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Voices</SelectLabel>
-                    <SelectItem
-                      label="Apple"
-                      value="apple"
-                      onPress={() => setHostVoice("apple")}
-                    >
-                      Apple
-                    </SelectItem>
-                    <SelectItem
-                      label="Banana"
-                      value="banana"
-                      onPress={() => setHostVoice("banana")}
-                    >
-                      Banana
-                    </SelectItem>
-                    <SelectItem
-                      label="Blueberry"
-                      value="blueberry"
-                      onPress={() => setHostVoice("blueberry")}
-                    >
-                      Blueberry
-                    </SelectItem>
-                    <SelectItem
-                      label="Grapes"
-                      value="grapes"
-                      onPress={() => setHostVoice("grapes")}
-                    >
-                      Grapes
-                    </SelectItem>
-                    <SelectItem
-                      label="Pineapple"
-                      value="pineapple"
-                      onPress={() => setHostVoice("pineapple")}
-                    >
-                      Pineapple
-                    </SelectItem>
+                    {voiceOptions.map((option) => (
+                      <SelectItem key={option.value} onPress={() => setHostVoice(option.value)} label={option.label} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <Button variant="outline" size="lg" className="rounded-full">
-                <Text>Play</Text>
+              <Button className="w-fit" variant="link">
+                <Text>
+                  Play Sample
+                </Text>
+              </Button>
+            </View>
+
+            <View>
+              <Label className="text-lg font-medium text-foreground mb-2">Select guest voice</Label>
+              <Select>
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    className="text-foreground text-lg"
+                    placeholder="Select a voice..."
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  <ScrollView>
+                  <SelectGroup>
+                    <SelectLabel>Voices</SelectLabel>
+                    {voiceOptions.map((option) => (
+                      <SelectItem key={option.value} onPress={() => setGuestVoice(option.value)} label={option.label} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </ScrollView>
+                </SelectContent>
+              </Select>
+              <Button className="w-fit" variant="link">
+                <Text>
+                  Play Sample
+                </Text>
               </Button>
             </View>
           </View>
-          <View className="flex flex-col items-center justify-center mt-10">
-            <Label className="text-5xl font-bold">Select guest voice</Label>
-            <View className="flex flex-row items-center justify-center gap-2">
-              <Select>
-                <SelectTrigger className="w-[250px]">
-                  <SelectValue
-                    className="text-foreground text-sm native:text-lg"
-                    placeholder="Select a voice for the guest"
-                  />
-                </SelectTrigger>
-                <SelectContent className="w-[250px]">
-                  <SelectGroup>
-                    <SelectLabel>Voices</SelectLabel>
-                    <SelectItem
-                      label="Apple"
-                      value="apple"
-                      onPress={() => setGuestVoice("apple")}
-                    >
-                      Apple
-                    </SelectItem>
-                    <SelectItem
-                      label="Banana"
-                      value="banana"
-                      onPress={() => setGuestVoice("banana")}
-                    >
-                      Banana
-                    </SelectItem>
-                    <SelectItem
-                      label="Blueberry"
-                      value="blueberry"
-                      onPress={() => setGuestVoice("blueberry")}
-                    >
-                      Blueberry
-                    </SelectItem>
-                    <SelectItem
-                      label="Grapes"
-                      value="grapes"
-                      onPress={() => setGuestVoice("grapes")}
-                    >
-                      Grapes
-                    </SelectItem>
-                    <SelectItem
-                      label="Pineapple"
-                      value="pineapple"
-                      onPress={() => setGuestVoice("pineapple")}
-                    >
-                      Pineapple
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Button variant="outline" size="lg" className="rounded-full">
-                <Text>Play</Text>
-              </Button>
-            </View>
+
+          <View>
             <Button
-              variant="default"
               size="lg"
-              className="rounded-full mt-4"
+              className="w-full"
               disabled={disabled}
+              onPress={handleCreatePodcast}
             >
               <Text>Create Podcast</Text>
             </Button>
-            {error && <Text className="text-red-500">{error}</Text>}
+            {error ? <Text className="text-destructive text-center mt-4">{error}</Text> : null}
           </View>
-        </ScrollView>
+        </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 }
