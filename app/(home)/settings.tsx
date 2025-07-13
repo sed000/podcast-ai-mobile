@@ -12,8 +12,8 @@ export default function settings() {
     const [coins, setCoins] = useState(0);
     const [subscription, setSubscription] = useState(true);
   return (
-    <View className='flex-1 mt-4 p-4 flex flex-col gap-4'>
-      <View className='flex flex-col justify-start gap-4'>
+    <View className='flex-1 p-4 flex flex-col gap-4 bg-background'>
+      <View className='flex flex-col justify-start gap-4 bg-background'>
         <Text className='text-2xl font-bold'>Account</Text>
         <Text className='text-lg'>{user?.emailAddresses[0].emailAddress}</Text>
         <Text className='text-lg font-bold'>Coins: {coins}</Text>

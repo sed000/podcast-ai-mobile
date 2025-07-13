@@ -1,14 +1,18 @@
-import { useUser } from "@clerk/clerk-react";
-import { useMutation } from "convex/react";
-import { api } from "~/convex/_generated/api";
-
 const AZURE_URL = process.env.EXPO_PUBLIC_AZURE_URL!;
-const createPodcastMutation = useMutation(api.database.createPodcast);
+
 export async function generatePodcast(
   prompt: string,
   userId: string,
   host: string,
-  guest: string
+  guest: string,
+  createPodcastMutation: (args: {
+    userId: string;
+    title: string;
+    description: string;
+    hostVoice: string;
+    guestVoice: string;
+    prompt: string;
+  }) => Promise<any>
 ) {
   try {
     const body = { prompt, userId, host, guest };

@@ -24,7 +24,7 @@ export default function Page() {
   });
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-background">
       <SafeAreaView>
         <SignedIn>
           <ScrollView showsVerticalScrollIndicator={false}>
