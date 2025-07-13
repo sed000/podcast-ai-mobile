@@ -14,8 +14,44 @@ export const createUser = mutation({
   },
 });
 
+export const deleteUser = mutation({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
+    
+    await ctx.db.delete(user._id);
+    return user._id;
+  },
+});
+
+export const getUser = query({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+    return user;
+  },
+});
+
+
 export const createPodcast = mutation({
-  args: { userId: v.string(), title: v.string(), description: v.string(), hostVoice: v.string(), guestVoice: v.string(), prompt: v.string() },
+  args: {
+    userId: v.string(),
+    title: v.string(),
+    description: v.string(),
+    hostVoice: v.string(),
+    guestVoice: v.string(),
+    prompt: v.string(),
+  },
   handler: async (ctx, args) => {
     const podcast = await ctx.db.insert("podcasts", {
       userId: args.userId,
@@ -23,7 +59,7 @@ export const createPodcast = mutation({
       description: args.description,
       hostVoice: args.hostVoice,
       guestVoice: args.guestVoice,
-      prompt: args.prompt
+      prompt: args.prompt,
     });
     return podcast;
   },
@@ -32,7 +68,10 @@ export const createPodcast = mutation({
 export const getPodcasts = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
-    const podcasts = await ctx.db.query("podcasts").filter((q) => q.eq(q.field("userId"), args.userId)).collect();
+    const podcasts = await ctx.db
+      .query("podcasts")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .collect();
     return podcasts;
   },
 });

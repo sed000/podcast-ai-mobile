@@ -30,7 +30,7 @@ export default function Page() {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View className="mt-2 flex flex-row items-start justify-between gap-4 mx-4 mb-4">
               <Button
-                variant="outline"
+                variant="default"
                 size="lg"
                 className="rounded-full"
                 onPress={() => router.push("/settings")}
@@ -38,7 +38,7 @@ export default function Page() {
                 <TextUI>Settings</TextUI>
               </Button>
               <Button
-                variant="outline"
+                variant="default"
                 size="lg"
                 className="rounded-full"
                 onPress={() => router.push("/create-podcast")}
@@ -71,6 +71,11 @@ export default function Page() {
                   description={podcast.description}
                 />
               ))}
+              {!podcasts?.length && (
+                <View className="flex flex-col items-center justify-center gap-4">
+                  <TextUI className="text-lg font-medium">No podcasts found. Create one to get started.</TextUI>
+                </View>
+              )}
             </View>
           </ScrollView>
         </SignedIn>

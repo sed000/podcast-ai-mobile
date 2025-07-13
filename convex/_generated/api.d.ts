@@ -14,6 +14,8 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as database from "../database.js";
+import type * as http from "../http.js";
+import type * as webhook from "../webhook.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -25,6 +27,8 @@ import type * as database from "../database.js";
  */
 declare const fullApi: ApiFromModules<{
   database: typeof database;
+  http: typeof http;
+  webhook: typeof webhook;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
