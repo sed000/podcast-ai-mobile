@@ -17,6 +17,7 @@ import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { PodcastProvider } from "~/lib/PodcastContext";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -38,32 +39,38 @@ const usePlatformSpecificSetup = Platform.select({
   default: noop,
 });
 
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
+  unsavedChangesWarning: false,
+});
+
 export default function RootLayout() {
   usePlatformSpecificSetup();
   const { isDarkColorScheme } = useColorScheme();
 
   return (
     <ClerkProvider tokenCache={tokenCache}>
-      <PodcastProvider>
-        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-          <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-          <Stack>
-            <Stack.Screen
-              name="(auth)"
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="(home)"
-              options={{
-                headerShown: false,
-              }}
-            />
-          </Stack>
-          <PortalHost />
-        </ThemeProvider>
-      </PodcastProvider>
+      <ConvexProvider client={convex}>
+        <PodcastProvider>
+          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <Stack>
+              <Stack.Screen
+                name="(auth)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="(home)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </Stack>
+            <PortalHost />
+          </ThemeProvider>
+        </PodcastProvider>
+      </ConvexProvider>
     </ClerkProvider>
   );
 }

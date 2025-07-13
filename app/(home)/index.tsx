@@ -7,6 +7,8 @@ import { Button } from "~/components/ui/button";
 import { Text as TextUI } from "~/components/ui/text";
 import { usePodcast } from "~/lib/PodcastContext";
 import LoadingSpinner from "~/components/LoadingSpinner";
+import { api } from "~/convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
 
 export default function Page() {
   const { user } = useUser();
@@ -16,6 +18,10 @@ export default function Page() {
   if (!user) {
     return <Redirect href="/(auth)/sign-in" />;
   }
+
+  const podcasts = useQuery(api.database.getPodcasts, {
+    userId: user.id,
+  });
 
   return (
     <View className="flex-1">
@@ -58,30 +64,13 @@ export default function Page() {
             )}
 
             <View className="mx-2 flex flex-col gap-4">
-              <PodCard
-                title="GeneratedPodcast"
-                description="Generate a podcast from your text"
-              />
-              <PodCard
-                title="GeneratedPodcast"
-                description="Generate a podcast from your text"
-              />
-              <PodCard
-                title="GeneratedPodcast"
-                description="Generate a podcast from your text"
-              />
-              <PodCard
-                title="GeneratedPodcast"
-                description="Generate a podcast from your text"
-              />
-              <PodCard
-                title="GeneratedPodcast"
-                description="Generate a podcast from your text"
-              />
-              <PodCard
-                title="GeneratedPodcast"
-                description="Generate a podcast from your text"
-              />
+              {podcasts?.map((podcast) => (
+                <PodCard
+                  key={podcast._id}
+                  title={podcast.title}
+                  description={podcast.description}
+                />
+              ))}
             </View>
           </ScrollView>
         </SignedIn>

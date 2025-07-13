@@ -22,10 +22,10 @@ export default function PodCard({ title, description }: PodCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-row gap-4 items-start justify-start">
-        <Button variant='default' size='lg' className='rounded-full'>
+        <Button variant='default' size='lg' className='rounded-md'>
           <TextUI>Listen</TextUI>
         </Button>
-        <Button variant='default' size='lg' className='rounded-full'>
+        <Button variant='default' size='lg' className='rounded-md'>
           <TextUI>Edit</TextUI>
         </Button>
       </CardContent>

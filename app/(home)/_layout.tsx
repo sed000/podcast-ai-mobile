@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router/stack'
-import { SignOutButton } from '~/components/SignOutButton'
 import { ThemeToggle } from '~/components/ThemeToggle'
 
 export default function Layout() {

@@ -12,10 +12,10 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
-import { generatePodcast } from "~/api/api";
 import { useUser } from "@clerk/clerk-react";
 import { router } from "expo-router";
 import { usePodcast } from "~/lib/PodcastContext";
+import { generatePodcast } from "~/api/api";
 
 const voiceOptions = [
   { label: "Alloy", value: "alloy" },
@@ -25,7 +25,6 @@ const voiceOptions = [
   { label: "Coral", value: "coral" },
   { label: "Fable", value: "fable" },
   { label: "Nova", value: "nova" },
-
 ];
 
 export default function CreatePodcast() {
@@ -64,12 +63,16 @@ export default function CreatePodcast() {
         setIsLoading(true);
         setGenerating(true, prompt);
         setPodcastError(null);
-        
-        router.push('/');
-        const result = await generatePodcast(prompt, userId, hostVoice, guestVoice);
-              
+
+        router.push("/");
+        const result = await generatePodcast(
+          prompt,
+          userId,
+          hostVoice,
+          guestVoice
+        );
       } catch (err: any) {
-        setPodcastError(err.message || 'Failed to generate podcast');
+        setPodcastError(err.message || "Failed to generate podcast");
       } finally {
         setGenerating(false);
         setIsLoading(false);
@@ -86,12 +89,14 @@ export default function CreatePodcast() {
           </Text>
 
           <View className="gap-y-4">
-            <Label className="text-lg font-medium text-foreground">Enter your prompt</Label>
+            <Label className="text-lg font-medium text-foreground">
+              Enter your prompt
+            </Label>
             <TextInput
               placeholder="What do you want to listen about?"
               value={prompt}
               onChangeText={setPrompt}
-              className="text-lg bg-gray-300 border border-border rounded-lg p-4 w-full text-foreground"
+              className="text-lg text-black bg-gray-300 border border-border rounded-lg p-4 w-full"
               multiline={true}
               maxLength={100}
               placeholderTextColor="gray"
@@ -103,7 +108,9 @@ export default function CreatePodcast() {
 
           <View className="gap-y-4">
             <View>
-              <Label className="text-lg font-medium text-foreground mb-2">Select host voice</Label>
+              <Label className="text-lg font-medium text-foreground mb-2">
+                Select host voice
+              </Label>
               <Select>
                 <SelectTrigger className="w-full">
                   <SelectValue
@@ -115,7 +122,12 @@ export default function CreatePodcast() {
                   <SelectGroup>
                     <SelectLabel>Voices</SelectLabel>
                     {voiceOptions.map((option) => (
-                      <SelectItem key={option.value} onPress={() => setHostVoice(option.value)} label={option.label} value={option.value}>
+                      <SelectItem
+                        key={option.value}
+                        onPress={() => setHostVoice(option.value)}
+                        label={option.label}
+                        value={option.value}
+                      >
                         {option.label}
                       </SelectItem>
                     ))}
@@ -123,14 +135,14 @@ export default function CreatePodcast() {
                 </SelectContent>
               </Select>
               <Button className="w-fit" variant="link">
-                <Text>
-                  Play Sample
-                </Text>
+                <Text>Play Sample</Text>
               </Button>
             </View>
 
             <View>
-              <Label className="text-lg font-medium text-foreground mb-2">Select guest voice</Label>
+              <Label className="text-lg font-medium text-foreground mb-2">
+                Select guest voice
+              </Label>
               <Select>
                 <SelectTrigger className="w-full">
                   <SelectValue
@@ -140,21 +152,24 @@ export default function CreatePodcast() {
                 </SelectTrigger>
                 <SelectContent>
                   <ScrollView>
-                  <SelectGroup>
-                    <SelectLabel>Voices</SelectLabel>
-                    {voiceOptions.map((option) => (
-                      <SelectItem key={option.value} onPress={() => setGuestVoice(option.value)} label={option.label} value={option.value}>
-                        {option.label}
-                      </SelectItem>
+                    <SelectGroup>
+                      <SelectLabel>Voices</SelectLabel>
+                      {voiceOptions.map((option) => (
+                        <SelectItem
+                          key={option.value}
+                          onPress={() => setGuestVoice(option.value)}
+                          label={option.label}
+                          value={option.value}
+                        >
+                          {option.label}
+                        </SelectItem>
                       ))}
                     </SelectGroup>
                   </ScrollView>
                 </SelectContent>
               </Select>
               <Button className="w-fit" variant="link">
-                <Text>
-                  Play Sample
-                </Text>
+                <Text>Play Sample</Text>
               </Button>
             </View>
           </View>
@@ -168,7 +183,9 @@ export default function CreatePodcast() {
             >
               <Text>{isLoading ? "Creating..." : "Create Podcast"}</Text>
             </Button>
-            {error ? <Text className="text-destructive text-center mt-4">{error}</Text> : null}
+            {error ? (
+              <Text className="text-destructive text-center mt-4">{error}</Text>
+            ) : null}
           </View>
         </View>
       </SafeAreaView>
