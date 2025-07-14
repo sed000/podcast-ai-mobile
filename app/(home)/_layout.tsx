@@ -1,14 +1,25 @@
-import { Stack } from 'expo-router/stack'
-import { ThemeToggle } from '~/components/ThemeToggle'
+import { Stack } from "expo-router/stack";
+import { ThemeToggle } from "~/components/ThemeToggle";
 
 export default function Layout() {
   return (
-    <Stack screenOptions={{ headerShown: false}}
-    >
-      <Stack.Screen name="index" options={{ headerShown: false, title: 'Home' }} />
-      <Stack.Screen name="settings" options={{ headerShown: true, title: 'Settings and Preferences', headerRight: () => <ThemeToggle /> }} />
-      <Stack.Screen name="create-podcast" options={{ headerShown: true, title: 'Create Podcast' }} />
-      <Stack.Screen name="test" options={{ headerShown: true, title: 'Test' }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name="index"
+        options={{ headerShown: false, title: "Home" }}
+      />
+      <Stack.Screen
+        name="settings"
+        options={{
+          headerShown: true,
+          title: "Settings and Preferences",
+          headerRight: () => <ThemeToggle />,
+        }}
+      />
+      <Stack.Screen
+        name="create-podcast"
+        options={{ headerShown: true, title: "Create Podcast" }}
+      />
     </Stack>
-  )
+  );
 }
