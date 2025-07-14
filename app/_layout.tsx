@@ -18,6 +18,8 @@ import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { PodcastProvider } from "~/lib/PodcastContext";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
+import Purchases, { LOG_LEVEL } from "react-native-purchases";
+import { useEffect } from "react";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -44,6 +46,20 @@ const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
 });
 
 export default function RootLayout() {
+
+   // RevenueCat
+   useEffect(() => {
+    Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
+
+    if (Platform.OS === "android") {
+      Purchases.configure({
+        apiKey: process.env.EXPO_PUBLIC_REVENUECAT_PROJECT_GOOGLE_API_KEY!,
+      });
+    }
+    
+  }, []);
+
+
   usePlatformSpecificSetup();
   const { isDarkColorScheme } = useColorScheme();
 
@@ -51,24 +67,24 @@ export default function RootLayout() {
     <ClerkProvider tokenCache={tokenCache}>
       <ConvexProvider client={convex}>
         <PodcastProvider>
-            <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-              <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-              <Stack>
-                <Stack.Screen
-                  name="(auth)"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="(home)"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-              </Stack>
-              <PortalHost />
-            </ThemeProvider>
+          <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <Stack>
+              <Stack.Screen
+                name="(auth)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="(home)"
+                options={{
+                  headerShown: false,
+                }}
+              />
+            </Stack>
+            <PortalHost />
+          </ThemeProvider>
         </PodcastProvider>
       </ConvexProvider>
     </ClerkProvider>

@@ -20,6 +20,10 @@ export default function Layout() {
         name="create-podcast"
         options={{ headerShown: true, title: "Create Podcast" }}
       />
+      <Stack.Screen
+        name="paywall"
+        options={{ headerShown: true, title: "Paywall" }}
+      />
     </Stack>
   );
 }

@@ -8,9 +8,11 @@ import SubscriptionDialog from "~/components/SubscriptionDialog";
 import DeleteDialog from "~/components/DeleteDialog";
 import { useQuery } from "convex/react";
 import { api } from "~/convex/_generated/api";
+import { useRouter } from "expo-router";
 
 export default function settings() {
   const { user } = useUser();
+  const router = useRouter();
   const userDetail = useQuery(api.database.getUser, { userId: user?.id! });
 
   return (
@@ -22,7 +24,12 @@ export default function settings() {
         {userDetail?.subscription ? (
           <SubscriptionDialog />
         ) : (
-          <Button variant="default" size="lg" className="rounded-full">
+          <Button
+            variant="default"
+            size="lg"
+            className="rounded-full"
+            onPress={() => router.push("/paywall")}
+          >
             <Text>Subscribe</Text>
           </Button>
         )}
