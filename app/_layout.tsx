@@ -52,9 +52,14 @@ export default function RootLayout() {
     Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
 
     if (Platform.OS === "android") {
-      Purchases.configure({
-        apiKey: process.env.EXPO_PUBLIC_REVENUECAT_PROJECT_GOOGLE_API_KEY!,
-      });
+      try {
+        Purchases.configure({
+          apiKey: process.env.EXPO_PUBLIC_REVENUECAT_PROJECT_GOOGLE_API_KEY!,
+        });
+        console.log("RevenueCat configured successfully");
+      } catch (error) {
+        console.error("RevenueCat configuration error:", error);
+      }
     }
     
   }, []);

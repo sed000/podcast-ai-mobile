@@ -1,43 +1,13 @@
-import { useEffect } from "react";
-import { Button, Text, View } from "react-native";
-import RevenueCatUI, { PAYWALL_RESULT } from "react-native-purchases-ui";
+import React from "react";
+import { View } from "react-native";
 
-export default function Index() {
-  useEffect(() => {
-    const checkPaywall = async () => {
-      try {
-        const paywallResult = await RevenueCatUI.presentPaywallIfNeeded({
-          requiredEntitlementIdentifier: "--"
-        });
+import RevenueCatUI from "react-native-purchases-ui";
 
-        if (paywallResult === PAYWALL_RESULT.PURCHASED || 
-            paywallResult === PAYWALL_RESULT.RESTORED) {
-          console.log("--");
-          // Handle successful purchase or restore here
-        }
-      } catch (error) {
-        console.error("Error presenting paywall:", error);
-      }
-    };
-
-    checkPaywall();
-  }, []);
-
+export default function Paywall() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+    <RevenueCatUI.Paywall
+      onDismiss={() => {
       }}
-    >
-      <Text style={{ marginBottom: 20 }}>RevenueCat Paywall Example</Text>
-      <Button 
-        title="Show Paywall" 
-        onPress={() => RevenueCatUI.presentPaywallIfNeeded({
-          requiredEntitlementIdentifier: "--"
-        })}
-      />
-    </View>
+    />
   );
 }

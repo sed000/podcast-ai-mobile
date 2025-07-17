@@ -11,14 +11,14 @@ export default function Layout() {
       <Stack.Screen
         name="settings"
         options={{
-          headerShown: true,
+          headerShown: false,
           title: "Settings and Preferences",
           headerRight: () => <ThemeToggle />,
         }}
       />
       <Stack.Screen
         name="create-podcast"
-        options={{ headerShown: true, title: "Create Podcast" }}
+        options={{ headerShown: false, title: "Create Podcast" }}
       />
       <Stack.Screen
         name="paywall"
