@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { Alert, View } from 'react-native'
 import React from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Text as TextUI } from './ui/text'
@@ -10,6 +10,12 @@ interface PodCardProps {
 }
 
 export default function PodCard({ title, description }: PodCardProps) {
+  const confirmDelete = () => {
+    Alert.alert('Delete Podcast', 'Are you sure you want to delete this podcast?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', onPress: () => console.log('delete') }
+    ])
+  }
   return (
     <View>
     <Card className='w-full rounded-2xl'>
@@ -25,8 +31,8 @@ export default function PodCard({ title, description }: PodCardProps) {
         <Button variant='default' size='lg' className='rounded-md'>
           <TextUI>Listen</TextUI>
         </Button>
-        <Button variant='default' size='lg' className='rounded-md'>
-          <TextUI>Edit</TextUI>
+        <Button variant='secondary' size='lg' className='rounded-md' onPress={confirmDelete}>
+          <TextUI>Delete</TextUI>
         </Button>
       </CardContent>
     </Card>

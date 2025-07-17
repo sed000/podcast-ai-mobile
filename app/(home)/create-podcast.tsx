@@ -19,6 +19,8 @@ import { usePodcast } from "~/lib/PodcastContext";
 import { useMutation } from "convex/react";
 import { api } from "~/convex/_generated/api";
 import { ArrowLeftIcon } from "lucide-react-native";
+import { Linking } from "react-native";
+import { Audio } from "expo-av";
 
 const voiceOptions = [
   { label: "Alloy", value: "alloy" },
@@ -85,8 +87,18 @@ export default function CreatePodcast() {
     }
   };
 
+  const playVoiceSample = async (voice: string) => {
+    if (!voice) return;
+    const url = `https://cdn.openai.com/API/voice-previews/${voice}.flac`;
+    try {
+      await Linking.openURL(url);
+    } catch (error) {
+      console.error("Failed to open URL:", error);
+    }
+  };
+
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-background">
     <ScrollView className="flex-1 bg-background p-6">
       <View className="flex-1">
         <Link href="/" className="mb-4 mt-4">
@@ -143,7 +155,12 @@ export default function CreatePodcast() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <Button className="w-fit" variant="link">
+              <Button 
+                className="w-fit" 
+                variant="link" 
+                disabled={!hostVoice}
+                onPress={() => playVoiceSample(hostVoice)}
+              >
                 <Text>Play Sample</Text>
               </Button>
             </View>
@@ -177,7 +194,12 @@ export default function CreatePodcast() {
                   </ScrollView>
                 </SelectContent>
               </Select>
-              <Button className="w-fit" variant="link">
+              <Button 
+                className="w-fit" 
+                variant="link" 
+                disabled={!guestVoice}
+                onPress={() => playVoiceSample(guestVoice)}
+              >
                 <Text>Play Sample</Text>
               </Button>
             </View>
