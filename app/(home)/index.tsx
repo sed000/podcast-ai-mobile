@@ -1,5 +1,5 @@
 import { SignedIn, useUser } from "@clerk/clerk-expo";
-import { Redirect, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PodCard from "~/components/PodCard";
@@ -17,13 +17,10 @@ export default function Page() {
   const { isGenerating, generatingPrompt, error } = usePodcast();
   const [isLoading, setIsLoading] = useState(true);
 
-  if (!user) {
-    return <Redirect href="/(auth)/sign-in" />;
-  }
-
-  const podcasts = useQuery(api.database.getPodcasts, {
-    userId: user.id,
-  });
+  const podcasts = useQuery(
+    api.database.getPodcasts,
+    user ? { userId: user.id } : "skip"
+  );
 
   useEffect(() => {
     if (podcasts) {
@@ -78,6 +75,7 @@ export default function Page() {
               {podcasts?.map((podcast) => (
                 <PodCard
                   key={podcast._id}
+                  podcastId={podcast._id}
                   title={podcast.title}
                   description={podcast.description}
                 />

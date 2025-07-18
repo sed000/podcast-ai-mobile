@@ -3,17 +3,21 @@ import React from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Text as TextUI } from './ui/text'
 import { Button } from './ui/button'
+import { api } from '../convex/_generated/api'
+import { useMutation } from 'convex/react'
 
 interface PodCardProps {
   title: string
   description: string   
+  podcastId: string
 }
 
-export default function PodCard({ title, description }: PodCardProps) {
+export default function PodCard({ title, description, podcastId }: PodCardProps) {
+  const deletePodcast = useMutation(api.database.deletePodcast);
   const confirmDelete = () => {
     Alert.alert('Delete Podcast', 'Are you sure you want to delete this podcast?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Delete', onPress: () => console.log('delete') }
+      { text: 'Delete', onPress: () => deletePodcast({ podcastId: podcastId }) }
     ])
   }
   return (

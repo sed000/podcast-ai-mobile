@@ -75,3 +75,20 @@ export const getPodcasts = query({
     return podcasts;
   },
 });
+
+export const deletePodcast = mutation({
+  args: { podcastId: v.string() },
+  handler: async (ctx, args) => {
+    const podcast = await ctx.db
+      .query("podcasts")
+      .filter((q) => q.eq(q.field("_id"), args.podcastId))
+      .first();
+    
+    if (!podcast) {
+      throw new Error("Podcast not found");
+    }
+    
+    await ctx.db.delete(podcast._id);
+    return podcast;
+  },
+});

@@ -16,7 +16,10 @@ import { ThemeToggle } from "~/components/ThemeToggle";
 export default function settings() {
   const { user } = useUser();
   const router = useRouter();
-  const userDetail = useQuery(api.database.getUser, { userId: user?.id! });
+  const userDetail = useQuery(
+    api.database.getUser,
+    user ? { userId: user.id } : "skip"
+  );
 
   return (
     <SafeAreaView className="flex-1 p-4 flex flex-col gap-4 bg-background">
