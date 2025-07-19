@@ -19,8 +19,7 @@ import { usePodcast } from "~/lib/PodcastContext";
 import { useMutation } from "convex/react";
 import { api } from "~/convex/_generated/api";
 import { ArrowLeftIcon } from "lucide-react-native";
-import { Linking } from "react-native";
-import { Audio } from "expo-av";
+import { useAudioPlayer } from "expo-audio";
 
 const voiceOptions = [
   { label: "Alloy", value: "alloy" },
@@ -39,11 +38,18 @@ export default function CreatePodcast() {
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [playingVoice, setPlayingVoice] = useState("");
 
   const { user } = useUser();
   const { setGenerating, setError: setPodcastError } = usePodcast();
   const createPodcastMutation = useMutation(api.database.createPodcast);
   const userId = user?.id?.toString();
+
+  const voicePlayer = useAudioPlayer();
+
+  const getVoiceUri = (voice: string) => {
+    return `https://cdn.openai.com/API/voice-previews/${voice}.flac`;
+  };
   useEffect(() => {
     if (prompt.length < 10) {
       setDisabled(true);
@@ -89,11 +95,20 @@ export default function CreatePodcast() {
 
   const playVoiceSample = async (voice: string) => {
     if (!voice) return;
-    const url = `https://cdn.openai.com/API/voice-previews/${voice}.flac`;
+    
+    if (playingVoice === voice) {
+      voicePlayer.pause();
+      voicePlayer.seekTo(0);
+      setPlayingVoice("");
+      return;
+    }
+
     try {
-      await Linking.openURL(url);
+      voicePlayer.replace({ uri: getVoiceUri(voice) });
+      voicePlayer.play();
+      setPlayingVoice(voice);
     } catch (error) {
-      console.error("Failed to open URL:", error);
+      console.error("Failed to play:", error);
     }
   };
 
@@ -161,7 +176,7 @@ export default function CreatePodcast() {
                 disabled={!hostVoice}
                 onPress={() => playVoiceSample(hostVoice)}
               >
-                <Text>Play Sample</Text>
+                <Text>{hostVoice && playingVoice === hostVoice ? "Stop" : "Play Sample"}</Text>
               </Button>
             </View>
 
@@ -200,7 +215,7 @@ export default function CreatePodcast() {
                 disabled={!guestVoice}
                 onPress={() => playVoiceSample(guestVoice)}
               >
-                <Text>Play Sample</Text>
+                <Text>{guestVoice && playingVoice === guestVoice ? "Stop" : "Play Sample"}</Text>
               </Button>
             </View>
           </View>
