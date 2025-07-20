@@ -12,6 +12,8 @@ export async function generatePodcast(
     hostVoice: string;
     guestVoice: string;
     prompt: string;
+    audioUrl: string;
+    sessionId?: string; 
   }) => Promise<any>
 ) {
   try {
@@ -31,14 +33,23 @@ export async function generatePodcast(
     }
 
     const data = await res.json();
-    await createPodcastMutation({
+    console.log("[generatePodcast] Azure response data:", data);
+    
+    const mutationArgs = {
       userId: userId,
       title: data.title,
       description: data.description,
       hostVoice: host,
       guestVoice: guest,
-      prompt: data.prompt,
-    });
+      prompt: prompt,
+      audioUrl: data.mergedUrl,
+      sessionId: data.sessionId,
+    };
+    
+    console.log("[generatePodcast] Calling mutation with args:", mutationArgs);
+    const result = await createPodcastMutation(mutationArgs);
+    console.log("[generatePodcast] Mutation result:", result);
+    
     return data;
   } catch (err: any) {
     console.warn("[generatePodcast] error:", err?.message);

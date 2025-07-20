@@ -51,15 +51,20 @@ export const createPodcast = mutation({
     hostVoice: v.string(),
     guestVoice: v.string(),
     prompt: v.string(),
+    audioUrl: v.string(),
+    sessionId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const podcast = await ctx.db.insert("podcasts", {
+      audioUrl: args.audioUrl,
+      sessionId: args.sessionId,
       userId: args.userId,
       title: args.title,
       description: args.description,
       hostVoice: args.hostVoice,
       guestVoice: args.guestVoice,
       prompt: args.prompt,
+      status: "completed",
     });
     return podcast;
   },

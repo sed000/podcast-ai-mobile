@@ -11,13 +11,14 @@ export default defineSchema({
     subscriptionEnd: v.optional(v.number()),
   }),
   podcasts: defineTable({
+    sessionId: v.optional(v.string()),
     title: v.string(),
     description: v.string(),
     userId: v.string(),
     hostVoice: v.string(),
     guestVoice: v.string(),
     prompt: v.string(),
-    // TODO: Listen
+    audioUrl: v.string(),
     status: v.optional(v.union(
       v.literal("pending"),
       v.literal("generating"),

@@ -78,6 +78,7 @@ export default function Page() {
                   podcastId={podcast._id}
                   title={podcast.title}
                   description={podcast.description}
+                  audioUrl={podcast.audioUrl}
                 />
               ))}
               {!podcasts?.length && (
