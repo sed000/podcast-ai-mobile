@@ -5,6 +5,7 @@ export async function generatePodcast(
   userId: string,
   host: string,
   guest: string,
+  coins: number,
   createPodcastMutation: (args: {
     userId: string;
     title: string;
@@ -13,12 +14,14 @@ export async function generatePodcast(
     guestVoice: string;
     prompt: string;
     audioUrl: string;
-    sessionId?: string; 
+    sessionId?: string;
   }) => Promise<any>
 ) {
   try {
     const body = { prompt, userId, host, guest };
-
+    if (coins < 1) {
+      throw new Error("You don't have enough coins");
+    }
     const res = await fetch(AZURE_URL, {
       method: "POST",
       headers: {

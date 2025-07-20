@@ -8,7 +8,6 @@ export const createUser = mutation({
       userId: args.userId,
       email: args.email,
       coins: 0,
-      subscription: false,
     });
     return user;
   },
@@ -21,11 +20,11 @@ export const deleteUser = mutation({
       .query("users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
-    
+
     if (!user) {
       throw new Error("User not found");
     }
-    
+
     await ctx.db.delete(user._id);
     return user._id;
   },
@@ -42,7 +41,6 @@ export const getUser = query({
   },
 });
 
-
 export const createPodcast = mutation({
   args: {
     userId: v.string(),
@@ -55,6 +53,23 @@ export const createPodcast = mutation({
     sessionId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (user.coins < 1) {
+      throw new Error("Not enough coins");
+    }
+
+    await ctx.db.patch(user._id, {
+      coins: user.coins - 1,
+    });
+
     const podcast = await ctx.db.insert("podcasts", {
       audioUrl: args.audioUrl,
       sessionId: args.sessionId,
@@ -88,12 +103,23 @@ export const deletePodcast = mutation({
       .query("podcasts")
       .filter((q) => q.eq(q.field("_id"), args.podcastId))
       .first();
-    
+
     if (!podcast) {
       throw new Error("Podcast not found");
     }
-    
+
     await ctx.db.delete(podcast._id);
     return podcast;
+  },
+});
+
+export const checkCoins = query({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+    return user?.coins;
   },
 });

@@ -16,7 +16,7 @@ import { generatePodcast } from "~/api/api";
 import { useUser } from "@clerk/clerk-react";
 import { Link, router } from "expo-router";
 import { usePodcast } from "~/lib/PodcastContext";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "~/convex/_generated/api";
 import { ArrowLeftIcon } from "lucide-react-native";
 import { useAudioPlayer } from "expo-audio";
@@ -39,19 +39,25 @@ export default function CreatePodcast() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [playingVoice, setPlayingVoice] = useState("");
-
   const { user } = useUser();
   const { setGenerating, setError: setPodcastError } = usePodcast();
   const createPodcastMutation = useMutation(api.database.createPodcast);
   const userId = user?.id?.toString();
-
   const voicePlayer = useAudioPlayer();
-
   const getVoiceUri = (voice: string) => {
     return `https://cdn.openai.com/API/voice-previews/${voice}.flac`;
   };
+  const coins = useQuery(api.database.checkCoins, { userId: userId! }) || 0;
   useEffect(() => {
-    if (prompt.length < 10) {
+    if (coins === undefined || coins === null) {
+      setDisabled(true);
+      setError("Loading...");
+      return;
+    }
+    if (coins < 1) {
+      setDisabled(true);
+      setError("You don't have enough coins (need 1)");
+    } else if (prompt.length < 10) {
       setDisabled(true);
       setError("Prompt must be at least 10 characters");
     } else if (!hostVoice) {
@@ -67,7 +73,7 @@ export default function CreatePodcast() {
       setDisabled(false);
       setError("");
     }
-  }, [hostVoice, guestVoice, prompt]);
+  }, [hostVoice, guestVoice, prompt, coins]);
 
   const handleCreatePodcast = async () => {
     if (!disabled && userId && !isLoading) {
@@ -75,13 +81,13 @@ export default function CreatePodcast() {
         setIsLoading(true);
         setGenerating(true, prompt);
         setPodcastError(null);
-
         router.push("/");
         const result = await generatePodcast(
           prompt,
           userId,
           hostVoice,
           guestVoice,
+          coins,
           createPodcastMutation
         );
       } catch (err: any) {

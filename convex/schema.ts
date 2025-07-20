@@ -6,9 +6,6 @@ export default defineSchema({
     email: v.string(),
     userId: v.string(),
     coins: v.number(),
-    subscription: v.boolean(),
-    subscriptionStart: v.optional(v.number()),
-    subscriptionEnd: v.optional(v.number()),
   }),
   podcasts: defineTable({
     sessionId: v.optional(v.string()),
