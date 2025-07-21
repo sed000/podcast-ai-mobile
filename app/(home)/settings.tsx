@@ -30,18 +30,14 @@ export default function settings() {
         <Text className="text-2xl font-bold">Account</Text>
         <Text className="text-lg">{user?.emailAddresses[0].emailAddress}</Text>
         <Text className="text-lg font-bold">Coins: {userDetail?.coins}</Text>
-        {userDetail?.subscription ? (
-          <SubscriptionDialog />
-        ) : (
-          <Button
-            variant="default"
-            size="lg"
-            className="rounded-full"
-            onPress={() => router.push("/paywall")}
-          >
-            <Text>Subscribe</Text>
-          </Button>
-        )}
+        <Button
+          variant="default"
+          size="lg"
+          className="rounded-full"
+          onPress={() => router.push("/paywall")}
+        >
+          <Text>Buy Coins</Text>
+        </Button>
       </View>
       <View className="flex flex-row justify-start gap-4 mt-2 mb-2">
         <Text className="text-2xl font-bold">Change Theme</Text>
