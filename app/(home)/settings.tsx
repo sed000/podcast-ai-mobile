@@ -1,10 +1,9 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useUser } from "@clerk/clerk-expo";
 import { Text } from "~/components/ui/text";
 import { Button } from "~/components/ui/button";
 import { SignOutButton } from "~/components/SignOutButton";
-import SubscriptionDialog from "~/components/SubscriptionDialog";
 import DeleteDialog from "~/components/DeleteDialog";
 import { useQuery } from "convex/react";
 import { api } from "~/convex/_generated/api";
