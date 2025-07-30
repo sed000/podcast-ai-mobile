@@ -1,6 +1,5 @@
 import { httpAction } from "./_generated/server";
 import { api } from "./_generated/api";
-import { User } from "lucide-react-native";
 
 export const webhook = httpAction(async (ctx, request) => {
   const body = await request.json();

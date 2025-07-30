@@ -43,3 +43,5 @@ expo-env.d.ts
 .env
 
 .todo
+
+.azure.ts

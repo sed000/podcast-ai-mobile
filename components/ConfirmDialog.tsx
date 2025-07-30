@@ -23,7 +23,6 @@ export default function ConfirmDialog() {
     const router = useRouter()
     const deleteUserMutation = useMutation(api.database.deleteUser);
     async function handleDeleteAccount() {
-        await deleteUserMutation({ userId: user?.id! });
         Alert.alert('Account Deleted', 'Your account has been deleted.')
         await user?.delete()
         signOut()

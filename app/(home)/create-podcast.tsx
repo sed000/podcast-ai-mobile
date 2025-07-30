@@ -22,13 +22,13 @@ import { ArrowLeftIcon } from "lucide-react-native";
 import { useAudioPlayer } from "expo-audio";
 
 const voiceOptions = [
-  { label: "Alloy", value: "alloy" },
   { label: "Ash", value: "ash" },
-  { label: "Ballad", value: "ballad" },
-  { label: "Echo", value: "echo" },
   { label: "Coral", value: "coral" },
+  { label: "Echo", value: "echo" },
   { label: "Fable", value: "fable" },
   { label: "Nova", value: "nova" },
+  { label: "Onyx", value: "onyx" },
+  { label: "Sage", value: "sage" },
 ];
 
 export default function CreatePodcast() {

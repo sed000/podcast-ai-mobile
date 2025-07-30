@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "podcastai",
-    "slug": "podcastai",
-    "version": "1.0.0",
+    "name": "Loqui",
+    "slug": "loqui",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "icon": "./assets/images/app-icon.png",
+    "scheme": "loqui",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -25,15 +25,20 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/app-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.podcastai"
+      "package": "com.loqui",
+      "versionCode": 2,
+      "permissions": [],
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/app-icon.png"
     },
     "plugins": [
       "expo-router",
