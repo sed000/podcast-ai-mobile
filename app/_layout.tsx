@@ -20,6 +20,7 @@ import { PodcastProvider } from "~/lib/PodcastContext";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import Purchases, { LOG_LEVEL } from "react-native-purchases";
 import { useEffect } from "react";
+import { config } from "~/lib/config";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -41,7 +42,7 @@ const usePlatformSpecificSetup = Platform.select({
   default: noop,
 });
 
-const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
+const convex = new ConvexReactClient(config.convexUrl, {
   unsavedChangesWarning: false,
 });
 
@@ -54,7 +55,7 @@ export default function RootLayout() {
     if (Platform.OS === "android") {
       try {
         Purchases.configure({
-          apiKey: process.env.EXPO_PUBLIC_REVENUECAT_PROJECT_GOOGLE_API_KEY!,
+          apiKey: config.revenuecatApiKey,
         });
         console.log("RevenueCat configured successfully");
       } catch (error) {
@@ -69,7 +70,10 @@ export default function RootLayout() {
   const { isDarkColorScheme } = useColorScheme();
 
   return (
-    <ClerkProvider tokenCache={tokenCache}>
+    <ClerkProvider 
+      publishableKey={config.clerkPublishableKey}
+      tokenCache={tokenCache}
+    >
       <ConvexProvider client={convex}>
         <PodcastProvider>
           <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
