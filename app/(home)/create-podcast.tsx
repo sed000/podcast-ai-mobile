@@ -56,7 +56,7 @@ export default function CreatePodcast() {
     }
     if (coins < 1) {
       setDisabled(true);
-      setError("You don't have enough coins (need 1)");
+      setError("You don't have enough coins (1 coin)");
     } else if (prompt.length < 10) {
       setDisabled(true);
       setError("Prompt must be at least 10 characters");
