@@ -62,7 +62,6 @@ export default function RootLayout() {
         console.error("RevenueCat configuration error:", error);
       }
     }
-    
   }, []);
 
 

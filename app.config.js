@@ -25,9 +25,9 @@ module.exports = {
   expo: {
     name: "Loqui",
     slug: "podcastai",
-    version: "1.1.1",
+    version: "1.2.0",
     orientation: "portrait",
-    icon: "./assets/images/app-icon.png",
+    icon: "./assets/images/ic-launcher.png",
     scheme: "loqui",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
@@ -53,7 +53,7 @@ module.exports = {
       },
       package: "com.verissimus.loqui",
       versionCode: 2,
-      permissions: [],
+      permissions: ["com.android.vending.BILLING"],
       blockedPermissions: [
         "android.permission.RECORD_AUDIO"
       ]
@@ -75,7 +75,6 @@ module.exports = {
       eas: {
         projectId: "06e9aa21-0e8b-4f9a-a76f-9f1808603fb0"
       },
-      // Also expose the env vars in extra for debugging
       ...envConfig
     }
   }
