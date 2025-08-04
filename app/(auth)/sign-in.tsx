@@ -30,17 +30,59 @@ export default function SignInPage() {
   }, [startOAuthFlow])
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text className='text-2xl font-bold text-center'>Welcome to Loqui</Text>
-      {error && (
-        <Text className='text-red-500 text-center mt-4 mb-4 px-4'>
-          {error}
-        </Text>
-      )}
-      <Button variant="default" size="lg" className='mx-auto rounded-full flex-row items-center' onPress={onSignInPress}>
-        <GoogleIcon size={20} />
-        <Text>Continue with Google</Text>
-      </Button>
+    <View className="flex-1 bg-background">
+      <View className="flex-1 justify-center items-center px-8">
+        <View className="mb-12 items-center">
+          <View className="w-24 h-24 bg-primary rounded-3xl flex items-center justify-center mb-6 border-2 border-primary/20">
+            <Text className="text-4xl">🎙️</Text>
+          </View>
+          <Text className="text-4xl font-bold text-center text-foreground mb-3">
+            Welcome to Loqui
+          </Text>
+          <Text className="text-lg text-center text-muted-foreground px-4">
+            Create amazing AI-powered podcasts in seconds
+          </Text>
+        </View>
+
+        {error && (
+          <View className="w-full mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-2xl">
+            <Text className="text-destructive text-center font-medium">
+              ⚠️ {error}
+            </Text>
+          </View>
+        )}
+
+        <View className="w-full max-w-sm">
+          <Button 
+            variant="default" 
+            size="lg" 
+            className="w-full rounded-2xl bg-primary py-4 flex-row items-center justify-center gap-3" 
+            onPress={onSignInPress}
+          >
+            <GoogleIcon size={24} />
+            <Text className="text-lg font-semibold">Continue with Google</Text>
+          </Button>
+          
+          <Text className="text-center text-sm text-muted-foreground mt-6 px-4">
+            By continuing, you agree to our Terms of Service and Privacy Policy
+          </Text>
+        </View>
+
+        <View className="mt-12 gap-y-3">
+          <View className="flex-row items-center gap-3">
+            <Text className="text-2xl">✨</Text>
+            <Text className="text-muted-foreground">AI-powered podcasts</Text>
+          </View>
+          <View className="flex-row items-center gap-3">
+            <Text className="text-2xl">🎭</Text>
+            <Text className="text-muted-foreground">Multiple voice options</Text>
+          </View>
+          <View className="flex-row items-center gap-3">
+            <Text className="text-2xl">⚡</Text>
+            <Text className="text-muted-foreground">Generated in seconds</Text>
+          </View>
+        </View>
+      </View>
     </View>
   )
 }

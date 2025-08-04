@@ -22,13 +22,4 @@ if (!config.azureUrl) {
 if (!config.revenuecatApiKey) {
   throw new Error('Missing EXPO_PUBLIC_REVENUECAT_PROJECT_GOOGLE_API_KEY');
 }
-
-// Debug logging
-console.log('[config.ts] Environment configuration loaded:', {
-  clerkPublishableKey: config.clerkPublishableKey.substring(0, 10) + '...',
-  convexUrl: config.convexUrl,
-  azureUrl: config.azureUrl.substring(0, 30) + '...',
-  revenuecatApiKey: config.revenuecatApiKey.substring(0, 10) + '...'
-});
-
 export const getConfig = () => config;

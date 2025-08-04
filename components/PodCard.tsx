@@ -114,49 +114,66 @@ export default function PodCard({
   };
 
   return (
-    <View>
-      <Card className="w-full rounded-2xl">
-        <CardHeader>
-          <CardTitle>
-            <TextUI className="text-2xl font-bold">{title}</TextUI>
-          </CardTitle>
+    <View className="mb-2">
+      <Card className="w-full rounded-3xl bg-card border-2 border-primary/10 shadow-sm">
+        <CardHeader className="pb-4">
+          <View className="flex-row items-start gap-3 mb-3">
+            <View className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center">
+              <TextUI className="text-2xl">🎙️</TextUI>
+            </View>
+            <View className="flex-1">
+              <CardTitle>
+                <TextUI className="text-2xl font-bold text-foreground leading-tight">{title}</TextUI>
+              </CardTitle>
+            </View>
+          </View>
           <CardDescription>
-            <TextUI className="text-lg font-medium">{description}</TextUI>
+            <TextUI className="text-base text-muted-foreground leading-relaxed">
+              {description}
+            </TextUI>
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-row gap-4 mx-auto items-start justify-start">
-          <Button
-            variant="default"
-            size="default"
-            className="rounded-md"
-            onPress={togglePlayback}
-            disabled={!status.isLoaded}
-          >
-            <TextUI>
-              {!status.isLoaded
-                ? "Loading..."
-                : status.playing
-                  ? "Stop"
-                  : "Listen"}
-            </TextUI>
-          </Button>
-          <Button
-            variant="default"
-            size="default"
-            className="rounded-md"
-            onPress={downloadAudio}
-            disabled={isDownloading}
-          >
-            <TextUI>{isDownloading ? "Downloading..." : "Download"}</TextUI>
-          </Button>
-          <Button
-            variant="secondary"
-            size="default"
-            className="rounded-md"
-            onPress={confirmDelete}
-          >
-            <TextUI>Delete</TextUI>
-          </Button>
+        
+        <CardContent className="pt-2">
+          <View className="flex flex-row gap-3 mb-4">
+            <Button
+              variant="default"
+              size="default"
+              className="flex-1 rounded-2xl bg-primary"
+              onPress={togglePlayback}
+              disabled={!status.isLoaded}
+            >
+              <TextUI className="font-semibold">
+                {!status.isLoaded
+                  ? "⏳ Loading..."
+                  : status.playing
+                    ? "⏸️ Stop"
+                    : "▶️ Listen"}
+              </TextUI>
+            </Button>
+            <Button
+              variant="outline"
+              size="default"
+              className="flex-1 rounded-2xl border-2 border-primary/20 bg-background"
+              onPress={downloadAudio}
+              disabled={isDownloading}
+            >
+              <TextUI className="font-semibold">
+                {isDownloading ? "⏬ Saving..." : "💾 Download"}
+              </TextUI>
+            </Button>
+          </View>
+          
+          <View className="border-t border-border/30 pt-4">
+            <Button
+              variant="outline"
+              size="sm"
+              className="self-center rounded-xl border border-destructive/30 bg-destructive/5"
+              onPress={confirmDelete}
+            >
+              <TextUI className="text-destructive font-medium">🗑️ Delete</TextUI>
+            </Button>
+          </View>
         </CardContent>
       </Card>
     </View>
