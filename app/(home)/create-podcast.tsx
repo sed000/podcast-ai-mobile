@@ -120,49 +120,65 @@ export default function CreatePodcast() {
 
   return (
     <SafeAreaView className="flex-1 bg-background">
-    <ScrollView className="flex-1 bg-background p-6">
-      <View className="flex-1">
-        <Link href="/" className="mb-4 mt-4">
-          <ArrowLeftIcon color="gray" />
-        </Link>
-        <View className="flex-1 justify-center gap-y-8">
-          <Text className="text-4xl font-bold text-center text-foreground">
-            Let's create a podcast
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+        <View className="bg-primary/5 rounded-b-3xl mx-4 mt-2 mb-8 px-6 py-8 border border-primary/10">
+          <Link href="/" className="mb-6">
+            <View className="w-10 h-10 bg-card rounded-full flex items-center justify-center border border-border">
+              <ArrowLeftIcon color="gray" size={20} />
+            </View>
+          </Link>
+          <Text className="text-4xl font-bold text-center text-foreground mb-2">
+            🎙️ Create Your Podcast
           </Text>
+          <Text className="text-lg text-center text-muted-foreground">
+            Transform your ideas into engaging conversations
+          </Text>
+        </View>
 
-          <View className="gap-y-4">
-            <Label className="text-lg font-medium text-foreground">
-              Enter your prompt
+        <View className="px-6 gap-y-10 pb-8">
+          <View className="bg-card rounded-2xl p-6 border border-border">
+            <Label className="text-xl font-bold text-foreground mb-4 flex items-center">
+              💭 Your Creative Prompt
             </Label>
             <TextInput
-              placeholder="What do you want to listen about?"
+              placeholder="What fascinating topic would you like to explore? Be creative!"
               value={prompt}
               onChangeText={setPrompt}
-              className="text-lg border border-border rounded-lg p-4 w-full text-foreground"
+              className="text-lg border-2 border-primary/20 rounded-xl p-4 w-full text-foreground bg-background min-h-[120px]"
               multiline={true}
               maxLength={100}
               placeholderTextColor="gray"
+              textAlignVertical="top"
             />
-            <Text className="text-sm text-muted-foreground text-right">
-              {prompt.length} / 100
-            </Text>
+            <View className="flex-row justify-between items-center mt-3">
+              <Text className="text-sm text-muted-foreground">
+                💡 Be specific and creative for best results
+              </Text>
+              <Text className="text-sm text-muted-foreground font-medium">
+                {prompt.length} / 100
+              </Text>
+            </View>
           </View>
 
-          <View className="gap-y-4">
-            <View>
-              <Label className="text-lg font-medium text-foreground mb-2">
-                Select host voice
+          <View className="gap-y-6">
+            <Text className="text-2xl font-bold text-center text-foreground mb-2">
+              🎭 Choose Your Voices
+            </Text>
+            
+            <View className="bg-card rounded-2xl p-6 border border-border">
+              <Label className="text-lg font-bold text-foreground mb-4 flex items-center">
+                👤 Host Voice
               </Label>
               <Select>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full border-2 border-primary/20 rounded-xl bg-background">
                   <SelectValue
                     className="text-foreground text-lg"
-                    placeholder="Select a voice..."
+                    placeholder="🎤 Select host voice..."
                   />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Voices</SelectLabel>
+                    <SelectLabel>Available Voices</SelectLabel>
                     {voiceOptions.map((option) => (
                       <SelectItem
                         key={option.value}
@@ -177,30 +193,32 @@ export default function CreatePodcast() {
                 </SelectContent>
               </Select>
               <Button 
-                className="w-fit" 
-                variant="link" 
+                className="mt-3 self-start" 
+                variant="outline" 
                 disabled={!hostVoice}
                 onPress={() => playVoiceSample(hostVoice)}
               >
-                <Text>{hostVoice && playingVoice === hostVoice ? "Stop" : "Play Sample"}</Text>
+                <Text className="font-medium">
+                  {hostVoice && playingVoice === hostVoice ? "🔇 Stop" : "▶️ Preview"}
+                </Text>
               </Button>
             </View>
 
-            <View>
-              <Label className="text-lg font-medium text-foreground mb-2">
-                Select guest voice
+            <View className="bg-card rounded-2xl p-6 border border-border">
+              <Label className="text-lg font-bold text-foreground mb-4 flex items-center">
+                👥 Guest Voice
               </Label>
               <Select>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-full border-2 border-primary/20 rounded-xl bg-background">
                   <SelectValue
                     className="text-foreground text-lg"
-                    placeholder="Select a voice..."
+                    placeholder="🎤 Select guest voice..."
                   />
                 </SelectTrigger>
                 <SelectContent>
                   <ScrollView>
                     <SelectGroup>
-                      <SelectLabel>Voices</SelectLabel>
+                      <SelectLabel>Available Voices</SelectLabel>
                       {voiceOptions.map((option) => (
                         <SelectItem
                           key={option.value}
@@ -216,28 +234,37 @@ export default function CreatePodcast() {
                 </SelectContent>
               </Select>
               <Button 
-                className="w-fit" 
-                variant="link" 
+                className="mt-3 self-start" 
+                variant="outline" 
                 disabled={!guestVoice}
                 onPress={() => playVoiceSample(guestVoice)}
               >
-                <Text>{guestVoice && playingVoice === guestVoice ? "Stop" : "Play Sample"}</Text>
+                <Text className="font-medium">
+                  {guestVoice && playingVoice === guestVoice ? "🔇 Stop" : "▶️ Preview"}
+                </Text>
               </Button>
             </View>
           </View>
 
-          <View>
+          <View className="bg-card rounded-2xl p-6 border border-border">
             <Button
               size="lg"
-              className="w-full"
+              className="w-full rounded-xl bg-primary py-4"
               disabled={disabled || isLoading}
               onPress={handleCreatePodcast}
             >
-              <Text>{isLoading ? "Creating..." : "Create Podcast"}</Text>
+              <Text className="text-lg font-bold">
+                {isLoading ? "✨ Creating Magic..." : "🚀 Create Podcast"}
+              </Text>
             </Button>
-            {error ? <Text className="text-center mt-4">{error}</Text> : null}
+            {error ? (
+              <View className="mt-4 p-4 bg-destructive/10 rounded-xl border border-destructive/20">
+                <Text className="text-center text-destructive font-medium">
+                  ⚠️ {error}
+                </Text>
+              </View>
+            ) : null}
           </View>
-        </View>
         </View>
       </ScrollView>
     </SafeAreaView>

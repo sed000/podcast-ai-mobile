@@ -1,10 +1,6 @@
-const path = require('path');
-
-// Determine which config to load based on EAS_BUILD_PROFILE
 const buildProfile = process.env.EAS_BUILD_PROFILE || 'development';
 console.log('[app.config.js] Loading config for profile:', buildProfile);
 
-// Load the appropriate config file
 let envConfig = {};
 try {
   envConfig = require(`./config/${buildProfile}.js`);
@@ -12,22 +8,21 @@ try {
 } catch (error) {
   console.error(`[app.config.js] Failed to load config for profile ${buildProfile}:`, error);
   // Fallback to development config
-  envConfig = require('./config/development.js');
+  envConfig = require('./config/production.js');
 }
 
 // Set environment variables in process.env so they're available to Metro bundler
 Object.keys(envConfig).forEach(key => {
   process.env[key] = envConfig[key];
-  console.log(`[app.config.js] Set ${key}:`, envConfig[key].substring(0, 20) + '...');
 });
 
 module.exports = {
   expo: {
     name: "Loqui",
     slug: "podcastai",
-    version: "1.2.0",
+    version: "2.0.0",
     orientation: "portrait",
-    icon: "./assets/images/ic-launcher.png",
+    icon: "./assets/images/ic_launcher.png",
     scheme: "loqui",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,

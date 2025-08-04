@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, View, Text } from "react-native";
+import { Alert } from "react-native";
 import { router } from "expo-router";
 import RevenueCatUI from "react-native-purchases-ui";
 import Purchases, { PurchasesOffering } from "react-native-purchases";
@@ -62,14 +62,6 @@ export default function Paywall() {
     console.log("Paywall dismissed");
     router.back();
   };
-
-  if (!offering) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Loading offerings...</Text>
-      </View>
-    );
-  }
 
   return (
     <RevenueCatUI.Paywall

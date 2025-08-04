@@ -28,7 +28,7 @@ export default function Layout() {
       />
       <Stack.Screen
         name="paywall"
-        options={{ headerShown: true, title: "Paywall" }}
+        options={{ headerShown: false, title: "Paywall" }}
       />
     </Stack>
   );
