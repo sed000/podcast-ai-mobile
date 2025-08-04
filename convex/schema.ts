@@ -23,4 +23,8 @@ export default defineSchema({
       v.literal("failed")
     )),
   }),
+  purchases: defineTable({
+    userId: v.string(),
+    revenuecatId: v.optional(v.string()),
+  }),
 });

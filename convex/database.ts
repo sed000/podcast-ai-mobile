@@ -1,4 +1,4 @@
-import { mutation, query } from "./_generated/server";
+import { internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const createUser = mutation({
@@ -121,5 +121,61 @@ export const checkCoins = query({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
     return user?.coins;
+  },
+});
+
+export const addCoins = internalMutation({
+  args: {
+    userId: v.string(),
+    coinsToAdd: v.number(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (!user) {
+      console.log(`User not found: ${args.userId}`);
+      return;
+    }
+
+    const newCoinsBalance = user.coins + args.coinsToAdd;
+
+    await ctx.db.patch(user._id, {
+      coins: newCoinsBalance,
+    });
+
+    console.log(
+      `Added ${args.coinsToAdd} coins to user ${args.userId}. New balance: ${newCoinsBalance}`
+    );
+
+    return {
+      previousBalance: user.coins,
+      coinsAdded: args.coinsToAdd,
+      newBalance: newCoinsBalance,
+    };
+  },
+});
+
+export const addPurchase = mutation({
+  args: {
+    userId: v.string(),
+    revenuecatId: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const purchase = await ctx.db.insert("purchases", {
+      userId: args.userId,
+      revenuecatId: args.revenuecatId,
+    });
+    return purchase;
+  },
+});
+
+export const getPurchaseByRevenuecatId = internalQuery({
+  args: { revenuecatId: v.string() },
+  handler: async (ctx, args) => {
+    const purchase = await ctx.db.query("purchases").filter((q) => q.eq(q.field("revenuecatId"), args.revenuecatId)).first();
+    return purchase;
   },
 });
