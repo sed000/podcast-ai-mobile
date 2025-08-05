@@ -1,4 +1,4 @@
-const buildProfile = process.env.EAS_BUILD_PROFILE || 'development';
+const buildProfile = process.env.EAS_BUILD_PROFILE || 'production';
 console.log('[app.config.js] Loading config for profile:', buildProfile);
 
 let envConfig = {};
@@ -7,11 +7,9 @@ try {
   console.log('[app.config.js] Successfully loaded config');
 } catch (error) {
   console.error(`[app.config.js] Failed to load config for profile ${buildProfile}:`, error);
-  // Fallback to development config
   envConfig = require('./config/production.js');
 }
 
-// Set environment variables in process.env so they're available to Metro bundler
 Object.keys(envConfig).forEach(key => {
   process.env[key] = envConfig[key];
 });

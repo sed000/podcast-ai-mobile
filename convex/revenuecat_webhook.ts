@@ -5,8 +5,6 @@ export const revenuecat_webhook = httpAction(async (ctx, request) => {
   const payload = await request.text();
   const event = JSON.parse(payload).event;
 
-  // It can take a moment for the client-side mutation to save the purchase.
-  // We'll try a few times to find the purchase before giving up.
   let purchase = null;
   for (let i = 0; i < 4; i++) {
     purchase = await ctx.runQuery(
@@ -16,14 +14,13 @@ export const revenuecat_webhook = httpAction(async (ctx, request) => {
     if (purchase) {
       break;
     }
-    await new Promise((resolve) => setTimeout(resolve, 500)); // wait 500ms
+    await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
   if (!purchase) {
     console.error(
       `Webhook Error: Could not find purchase with transaction_id: ${event.transaction_id} after multiple retries.`
     );
-    // Return a 200 to prevent RevenueCat from resending the webhook.
     return new Response("Purchase not found, but acknowledged.", {
       status: 200,
     });
@@ -35,7 +32,7 @@ export const revenuecat_webhook = httpAction(async (ctx, request) => {
   ) {
     await ctx.runMutation(internal.database.addCoins, {
       userId: purchase.userId,
-      coinsToAdd: 20, // As requested, hardcoding to 20 coins.
+      coinsToAdd: 20,
     });
   }
 
