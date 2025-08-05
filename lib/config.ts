@@ -1,3 +1,4 @@
+import { EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY, EXPO_PUBLIC_AZURE_URL, EXPO_PUBLIC_REVENUECAT_PROJECT_GOOGLE_API_KEY, EXPO_PUBLIC_CONVEX_URL } from '@env';
 // Environment variables are injected by app.config.js
 export const config = {
   clerkPublishableKey: process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY as string,
