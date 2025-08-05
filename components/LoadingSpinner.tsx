@@ -24,17 +24,40 @@ export default function LoadingSpinner({ prompt }: LoadingSpinnerProps) {
   }, []);
 
   return (
-    <View className="mx-4 mb-6 p-4 bg-muted rounded-lg">
-      <Text className="text-lg font-medium mb-2">
-        Generating your podcast...
-      </Text>
-      <Text className="text-sm text-muted-foreground mb-4">
-        "{prompt}"
-      </Text>
-      <Progress value={progress} className="mb-2" />
-      <Text className="text-xs text-muted-foreground">
-        This may take a few minutes. Please wait...
-      </Text>
+    <View className="bg-primary/5 rounded-3xl p-6 border border-primary/20">
+      <View className="flex-row items-center gap-4 mb-4">
+        <View className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center">
+          <Text className="text-2xl">✨</Text>
+        </View>
+        <View className="flex-1">
+          <Text className="text-xl font-bold text-foreground mb-1">
+            Creating your podcast...
+          </Text>
+          <Text className="text-sm text-muted-foreground">
+            We are working on it...
+          </Text>
+        </View>
+      </View>
+      
+      <View className="bg-background rounded-2xl p-4 mb-4 border border-border">
+        <Text className="text-sm text-muted-foreground mb-2 font-medium">
+          Your prompt:
+        </Text>
+        <Text className="text-base text-foreground italic">
+          "{prompt}"
+        </Text>
+      </View>
+      
+      <Progress value={progress} className="mb-4 h-3 bg-background" />
+      
+      <View className="flex-row items-center justify-between">
+        <Text className="text-sm text-muted-foreground">
+          Progress: {Math.round(progress)}%
+        </Text>
+        <Text className="text-sm text-muted-foreground">
+          ⏱️ This may take 2-3 minutes
+        </Text>
+      </View>
     </View>
   );
 } 

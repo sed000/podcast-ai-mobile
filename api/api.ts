@@ -1,4 +1,6 @@
-const AZURE_URL = process.env.EXPO_PUBLIC_AZURE_URL!;
+import { config } from "~/lib/config";
+
+const AZURE_URL = config.azureUrl;
 
 export async function generatePodcast(
   prompt: string,

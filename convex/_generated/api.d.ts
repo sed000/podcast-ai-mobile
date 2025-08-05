@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as database from "../database.js";
 import type * as http from "../http.js";
+import type * as revenuecat_webhook from "../revenuecat_webhook.js";
 import type * as webhook from "../webhook.js";
 
 /**
@@ -28,6 +29,7 @@ import type * as webhook from "../webhook.js";
 declare const fullApi: ApiFromModules<{
   database: typeof database;
   http: typeof http;
+  revenuecat_webhook: typeof revenuecat_webhook;
   webhook: typeof webhook;
 }>;
 export declare const api: FilterApi<

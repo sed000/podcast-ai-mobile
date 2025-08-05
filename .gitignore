@@ -46,3 +46,7 @@ eas.json
 .todo
 
 .azure.ts
+
+config/*
+
+GEMINI.MD
