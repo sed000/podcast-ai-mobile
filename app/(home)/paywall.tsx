@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
 import { router } from "expo-router";
 import RevenueCatUI from "react-native-purchases-ui";
 import Purchases, { PurchasesOffering } from "react-native-purchases";
@@ -10,6 +10,7 @@ import type {
 import { useUser } from "@clerk/clerk-expo";
 import { useMutation } from "convex/react";
 import { api } from "~/convex/_generated/api";
+import { Text } from "~/components/ui/text";
 
 export default function Paywall() {
   const [offering, setOffering] = useState<PurchasesOffering | null>(null);
@@ -22,7 +23,10 @@ export default function Paywall() {
         if (offerings.current !== null) {
           setOffering(offerings.current);
         } else {
-          Alert.alert("No Offerings Found", "Could not find any available offerings.");
+          Alert.alert(
+            "No Offerings Found",
+            "Could not find any available offerings."
+          );
         }
       } catch (e) {
         console.error("Error getting offerings:", e);
@@ -40,18 +44,16 @@ export default function Paywall() {
     storeTransaction: PurchasesStoreTransaction;
   }) => {
     try {
-    console.log("Purchase successful:", { customerInfo, storeTransaction });
-    if (user) {
-      addPurchase({
-        userId: user.id,
-        revenuecatId: storeTransaction.transactionIdentifier,
-      });
-    }
-    Alert.alert(
-      "Purchase Successful",
-      "Your coins will be added shortly.",
-        [{ text: "OK", onPress: () => router.back() }]
-      );
+      console.log("Purchase successful:", { customerInfo, storeTransaction });
+      if (user) {
+        addPurchase({
+          userId: user.id,
+          revenuecatId: storeTransaction.transactionIdentifier,
+        });
+      }
+      Alert.alert("Purchase Successful", "Your coins will be added shortly.", [
+        { text: "OK", onPress: () => router.back() },
+      ]);
     } catch (e) {
       console.error("Error adding purchase:", e);
       Alert.alert("Error", "Failed to add purchase.");
@@ -62,6 +64,14 @@ export default function Paywall() {
     console.log("Paywall dismissed");
     router.back();
   };
+
+  if (!offering) {
+    return (
+      <View className="flex-1 justify-center bg-background items-center">
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <RevenueCatUI.Paywall
